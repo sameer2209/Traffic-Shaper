@@ -1,8 +1,7 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
-#include <queue>
-#include <pthread.h>
+#include <ctime>
 
 class Request {
 
