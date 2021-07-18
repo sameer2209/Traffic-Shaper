@@ -1,3 +1,4 @@
+#include "main.h"
 #include <iostream>
 #include <unistd.h>
 #include <map>
@@ -34,6 +35,21 @@ void printExpectedFlags(){
         cout << flag << " ";
     }
     cout << endl;
+}
+
+void createInputDataStructure(map<string, unsigned int> input_values, InputData &inputData){
+    for(const auto& val : input_values){
+        if(val.first == "-r")
+            inputData.requestRate = val.second;
+        else if(val.first == "-R")
+            inputData.tokenReq = val.second;
+        else if(val.first == "-L")
+            inputData.tokenBufferSize = val.second;
+        else if(val.first == "-x")
+            inputData.tokenRate = val.second;
+        else if(val.first == "-t")
+            inputData.requestServiceTime = val.second;
+    }
 }
 
 void parseInput(const int argc, const char* const argv[], map<string, unsigned int> &input_values){
