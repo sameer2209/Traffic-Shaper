@@ -1,6 +1,6 @@
 #include "inputParser.h"
 #include "main.h"
-// #include "request.h"
+#include "request.h"
 #include <iostream>
 #include <pthread.h>
 
@@ -31,9 +31,10 @@ int main(int argc, char* argv[]){
     printInputValues();
     printDataFromStruct();
 
-    // cout << "emulation begin" << endl;
-    // pthread_t request_thread, token_thread, server_thread;
-    // int req, tok, ser;
-    // req = pthread_create(&request_thread, NULL, startRequestThread, &input_values["-r"]);
+    cout << "emulation begin" << endl;
+    pthread_t request_thread, token_thread, server_thread;
+    int req, tok, ser;
+    req = pthread_create(&request_thread, NULL, startRequestThread, &inputData);
+    pthread_join(request_thread, NULL);
     return 0;
 }
