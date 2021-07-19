@@ -12,7 +12,7 @@ using namespace std;
 map<string, unsigned int> input_values;
 InputData inputData;
 
-extern queue<Request> q1;
+extern queue<Request*> q1;
 extern pthread_mutex_t lockQ1;
 extern pthread_cond_t condQ1;
 
@@ -20,7 +20,7 @@ extern pthread_mutex_t lockTokenBuffer;
 extern TokenBuffer buffer;
 extern pthread_cond_t condTokenBuffer;
 
-extern queue<Request> q2;
+extern queue<Request*> q2;
 extern pthread_mutex_t lockQ2;
 extern pthread_cond_t condQ2;
 
@@ -54,6 +54,7 @@ int main(int argc, char* argv[]){
     tok = pthread_create(&token_thread, NULL, startTokenThread, &inputData);
     ser = pthread_create(&server_thread, NULL, startServerThread, &inputData);
     
+    Request* r;
     while(true){
         pthread_mutex_lock(&lockQ1);
         while(q1.empty()){
@@ -65,21 +66,21 @@ int main(int argc, char* argv[]){
             pthread_cond_wait(&condTokenBuffer, &lockTokenBuffer);
         }
         
-        Request r = q1.front();
+        r = q1.front();
         q1.pop();
-        r.setQ1ExitTime();
+        r->setQ1ExitTime();
         int i = 1;
         while(i++ <= inputData.tokenReq)
             buffer.pop();
-        cout << "r" << r.getRequestId() << " leaves Q1, time  in Q1 = " << r.getTimeInQ1() << ", remaining token = " << buffer.size() << endl;
+        cout << "r" << r->getRequestId() << " leaves Q1, time  in Q1 = " << r->getTimeInQ1() << ", remaining token = " << buffer.size() << endl;
         
         pthread_mutex_unlock(&lockTokenBuffer);
         pthread_mutex_unlock(&lockQ1);
 
         pthread_mutex_lock(&lockQ2);
         q2.push(r);
-        r.setQ2EntryTime();
-        cout << "r" << r.getRequestId() << " enters Q2" << endl;
+        r->setQ2EntryTime();
+        cout << "r" << r->getRequestId() << " enters Q2" << endl;
         pthread_cond_signal(&condQ2);
         pthread_mutex_unlock(&lockQ2);
     }

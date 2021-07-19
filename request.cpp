@@ -7,7 +7,7 @@
 
 using namespace std;
 
-std::queue<Request> q1;
+std::queue<Request*> q1;
 pthread_mutex_t lockQ1;
 pthread_cond_t condQ1;
 
@@ -68,14 +68,15 @@ void* startRequestThread(void* inputData){
     int tokensReq = ((InputData*) inputData)->tokenReq;
     pthread_mutex_init(&lockQ1, 0);
     pthread_cond_init(&condQ1, 0);
+    Request* req;
     while(true){
         sleep(requestRate);
-        Request req;
+        req = new Request();
         pthread_mutex_lock(&lockQ1);
-        cout << "r" << req.getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
+        cout << "r" << req->getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
         q1.push(req);
-        req.setQ1EntryTime();
-        cout << "r" << req.getRequestId() << " enters Q1" << endl;
+        req->setQ1EntryTime();
+        cout << "r" << req->getRequestId() << " enters Q1" << endl;
         pthread_cond_signal(&condQ1);
         pthread_mutex_unlock(&lockQ1);
     }
