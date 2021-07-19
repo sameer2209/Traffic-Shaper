@@ -70,8 +70,11 @@ int main(int argc, char* argv[]){
         q1.pop();
         r->setQ1ExitTime();
         int i = 1;
-        while(i++ <= inputData.tokenReq)
+        while(i++ <= inputData.tokenReq){
+            int tokId = buffer.front();
+            cout << "token number " << tokId << " being consumed by request r" << r->getRequestId() << endl;
             buffer.pop();
+        }
         cout << "r" << r->getRequestId() << " leaves Q1, time  in Q1 = " << r->getTimeInQ1() << "ms, remaining token = " << buffer.size() << endl;
         
         pthread_mutex_unlock(&lockTokenBuffer);

@@ -14,6 +14,7 @@ class TokenBuffer{
         void push(int e);
         int size();
         void pop();
+        int front();
 };
 
 #endif

@@ -32,6 +32,10 @@ void TokenBuffer::pop(){
     tokenBuf.pop();
 }
 
+int TokenBuffer::front(){
+    return tokenBuf.front();
+}
+
 TokenBuffer buffer;
 
 void* startTokenThread(void* inputData){
