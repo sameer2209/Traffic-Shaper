@@ -7,6 +7,7 @@ void* startTokenThread(void* inputData);
 
 class TokenBuffer{
     public:
+        static int tokenCount;
         std::queue<int> tokenBuf;
         int maxBufferSize;
         void setMaxBufferSize(int size);

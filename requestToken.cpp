@@ -8,6 +8,8 @@ using namespace std;
 pthread_mutex_t lockTokenBuffer;
 pthread_cond_t condTokenBuffer;
 
+int TokenBuffer::tokenCount = 0;
+
 void TokenBuffer::setMaxBufferSize(int size){
     maxBufferSize = size;
 }
@@ -15,10 +17,10 @@ void TokenBuffer::setMaxBufferSize(int size){
 void TokenBuffer::push(int ele){
     if(tokenBuf.size() < maxBufferSize){
         tokenBuf.push(ele);
-        std::cout << "new token enters the token buffer" << std::endl;
+        std::cout << "token number " << ele << " enters the token buffer" << endl;
     }
     else{
-        std::cout << "token buffer full, dropping token" << std::endl;
+        std::cout << "token buffer full, dropping token number " << ele << endl;
     }
 }
 
@@ -40,9 +42,10 @@ void* startTokenThread(void* inputData){
     pthread_cond_init(&condTokenBuffer, 0);
     while(true){
         sleep(tokenRate);
+        TokenBuffer::tokenCount++;
         pthread_mutex_lock(&lockTokenBuffer);
-        cout << "new token arrives" << endl;
-        buffer.push(1);
+        cout << "token number " << TokenBuffer::tokenCount << " arrives" << endl;
+        buffer.push(TokenBuffer::tokenCount);
         pthread_cond_signal(&condTokenBuffer);
         pthread_mutex_unlock(&lockTokenBuffer);
     }
