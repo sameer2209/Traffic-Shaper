@@ -23,6 +23,7 @@ class Request {
         void setServerExitTime();
         double getTimeInQ1();
         double getTimeInQ2();
+        double getServiceTime();
         double getTimeInSystem();
 };
 
