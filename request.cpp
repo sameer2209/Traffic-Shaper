@@ -25,22 +25,32 @@ Request::Request(){
 
 void Request::setQ1EntryTime(){
     time(&q1EntryTime);
+    // converting time in seconds to milliseconds
+    q1EntryTime *= 1000.0;
 }
 
 void Request::setQ1ExitTime(){
     time(&q1ExitTime);
+    // converting time in seconds to milliseconds
+    q1ExitTime *= 1000.0;
 }
 
 void Request::setQ2EntryTime(){
     time(&q2EntryTime);
+    // converting time in seconds to milliseconds
+    q2EntryTime *= 1000.0;
 }
 
 void Request::setQ2ExitTime(){
     time(&q2ExitTime);
+    // converting time in seconds to milliseconds
+    q2ExitTime *= 1000.0;
 }
 
 void Request::setServerExitTime(){
     time(&serverExitTime);
+    // converting time in seconds to milliseconds
+    serverExitTime *= 1000.0;
 }
 
 double Request::getTimeInQ1(){

@@ -24,11 +24,11 @@ void* startServerThread(void* inputData){
         req = q2.front();
         q2.pop();
         req->setQ2ExitTime();
-        cout << "r" << req->getRequestId() << " leaves Q2, time in Q2 = " << req->getTimeInQ2() << endl;
-        cout << "r" << req->getRequestId() << " begins service at S, requesting " << reqServiceTime << " of service" << endl;
+        cout << "r" << req->getRequestId() << " leaves Q2, time in Q2 = " << req->getTimeInQ2() << "ms" << endl;
+        cout << "r" << req->getRequestId() << " begins service at S, requesting " << reqServiceTime * 1000.0 << "ms of service" << endl;
         sleep(reqServiceTime);
         req->setServerExitTime();
-        cout << "r" << req->getRequestId() << " departs from S, service time = " << req->getServiceTime() << " time in system = " << req->getTimeInSystem() << endl;
+        cout << "r" << req->getRequestId() << " departs from S, service time = " << req->getServiceTime() << "ms, time in system = " << req->getTimeInSystem() << "ms" << endl;
         pthread_mutex_unlock(&lockQ2);
         free(req);
     }
