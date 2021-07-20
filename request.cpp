@@ -65,6 +65,7 @@ int Request::getRequestId(){
 void* startRequestThread(void* inputData){
     int requestRate = ((InputData*) inputData)->requestRate;
     int tokensReq = ((InputData*) inputData)->tokenReq;
+    int bufferLen = ((InputData*) inputData)->tokenBufferSize;
     pthread_mutex_init(&lockQ1, 0);
     pthread_cond_init(&condQ1, 0);
     Request* req;
@@ -73,6 +74,11 @@ void* startRequestThread(void* inputData){
         req = new Request();
         pthread_mutex_lock(&lockQ1);
         cout << "r" << req->getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
+        if(tokensReq > bufferLen){
+            cout << "r" << req->getRequestId() << " resource requirement is more than token buffer length, dropping request r" << req->getRequestId() << endl;
+            cout << "requests can not be served, terminating program..." << endl;
+            exit(1);
+        }
         q1.push(req);
         req->setQ1EntryTime();
         cout << "r" << req->getRequestId() << " enters Q1" << endl;
