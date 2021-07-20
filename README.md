@@ -6,6 +6,19 @@ If the resource requirement is > L than the requests will be dropped.
 
 **Important feature: This is a logger with two different logging levels.** To see how to use the different logging levels see the usage section below.
 
+## Expected Output
+```
+emulation begin
+r1 arrives, need 5 tokens 
+r1 enters Q1 
+r1 leaves Q1, time in Q1 = 3034.234ms, remaining token = 0 
+r1 enters Q2 
+r1 leaves Q2, time in Q2 = 0.214ms 
+r1 begins service at S, requesting 5000ms of service 
+r1 departs from S, service time = 5023.23ms, time in system = 8057.678ms 
+emulation ends
+```
+
 ## How to build
 
 The program uses make to build the binaries
