@@ -3,7 +3,6 @@
 #include "request.h"
 #include "requestServer.h"
 #include "requestToken.h"
-#include "logger.h"
 #include <iostream>
 #include <pthread.h>
 #include <queue>
@@ -47,8 +46,7 @@ int main(int argc, char* argv[]){
     printInputValues();
     printDataFromStruct();
 
-    // cout << "emulation begin" << endl;
-    printLog("emulation begin");
+    cout << "emulation begin" << endl;
     pthread_t request_thread, token_thread, server_thread;
     
     int req, tok, ser;
@@ -75,15 +73,11 @@ int main(int argc, char* argv[]){
         while(i++ <= inputData.tokenReq){
             if(inputData.logLevel == 2){
                 int tokId = buffer.front();
-                // cout << "token number " << tokId << " being consumed by request r" << r->getRequestId() << endl;
-                string msg = "token number " + to_string(tokId) + " being consumed by request r" + to_string(r->getRequestId());
-                printLog(msg);
+                cout << "token number " << tokId << " being consumed by request r" << r->getRequestId() << endl;
             }
             buffer.pop();
         }
-        // cout << "r" << r->getRequestId() << " leaves Q1, time  in Q1 = " << r->getTimeInQ1() << "ms, remaining token = " << buffer.size() << endl;
-        string msg = "r" + to_string(r->getRequestId()) + " leaves Q1, time  in Q1 = " + to_string(r->getTimeInQ1()) + "ms, remaining token = " + to_string(buffer.size());
-        printLog(msg);
+        cout << "r" << r->getRequestId() << " leaves Q1, time  in Q1 = " << r->getTimeInQ1() << "ms, remaining token = " << buffer.size() << endl;
         
         pthread_mutex_unlock(&lockTokenBuffer);
         pthread_mutex_unlock(&lockQ1);
@@ -91,9 +85,7 @@ int main(int argc, char* argv[]){
         pthread_mutex_lock(&lockQ2);
         q2.push(r);
         r->setQ2EntryTime();
-        // cout << "r" << r->getRequestId() << " enters Q2" << endl;
-        msg = "r" + to_string(r->getRequestId()) + " enters Q2";
-        printLog(msg);
+        cout << "r" << r->getRequestId() << " enters Q2" << endl;
         pthread_cond_signal(&condQ2);
         pthread_mutex_unlock(&lockQ2);
     }
