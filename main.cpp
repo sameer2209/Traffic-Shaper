@@ -71,8 +71,10 @@ int main(int argc, char* argv[]){
         r->setQ1ExitTime();
         int i = 1;
         while(i++ <= inputData.tokenReq){
-            int tokId = buffer.front();
-            cout << "token number " << tokId << " being consumed by request r" << r->getRequestId() << endl;
+            if(inputData.logLevel == 2){
+                int tokId = buffer.front();
+                cout << "token number " << tokId << " being consumed by request r" << r->getRequestId() << endl;
+            }
             buffer.pop();
         }
         cout << "r" << r->getRequestId() << " leaves Q1, time  in Q1 = " << r->getTimeInQ1() << "ms, remaining token = " << buffer.size() << endl;

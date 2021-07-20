@@ -14,13 +14,15 @@ void TokenBuffer::setMaxBufferSize(int size){
     maxBufferSize = size;
 }
 
-void TokenBuffer::push(int ele){
+void TokenBuffer::push(int ele, int logLevel){
     if(tokenBuf.size() < maxBufferSize){
         tokenBuf.push(ele);
-        std::cout << "token number " << ele << " enters the token buffer" << endl;
+        if(logLevel == 2)
+            cout << "token number " << ele << " enters the token buffer" << endl;
     }
     else{
-        std::cout << "token buffer full, dropping token number " << ele << endl;
+        if(logLevel == 2)
+            cout << "token buffer full, dropping token number " << ele << endl;
     }
 }
 
@@ -41,6 +43,7 @@ TokenBuffer buffer;
 void* startTokenThread(void* inputData){
     int tokenRate = ((InputData*) inputData)->tokenRate;
     int bufferSize = ((InputData*) inputData)->tokenBufferSize;
+    int logLevel = ((InputData*) inputData)->logLevel;
     buffer.setMaxBufferSize(bufferSize);
     pthread_mutex_init(&lockTokenBuffer, 0);
     pthread_cond_init(&condTokenBuffer, 0);
@@ -48,8 +51,9 @@ void* startTokenThread(void* inputData){
         sleep(tokenRate);
         TokenBuffer::tokenCount++;
         pthread_mutex_lock(&lockTokenBuffer);
-        cout << "token number " << TokenBuffer::tokenCount << " arrives" << endl;
-        buffer.push(TokenBuffer::tokenCount);
+        if(logLevel == 2)
+            cout << "token number " << TokenBuffer::tokenCount << " arrives" << endl;
+        buffer.push(TokenBuffer::tokenCount, logLevel);
         pthread_cond_signal(&condTokenBuffer);
         pthread_mutex_unlock(&lockTokenBuffer);
     }

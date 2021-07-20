@@ -11,7 +11,7 @@ class TokenBuffer{
         std::queue<int> tokenBuf;
         int maxBufferSize;
         void setMaxBufferSize(int size);
-        void push(int e);
+        void push(int e, int logLevel);
         int size();
         void pop();
         int front();
