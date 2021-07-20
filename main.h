@@ -7,6 +7,7 @@ struct InputData{
     unsigned int tokenRate;
     unsigned int tokenBufferSize;
     unsigned int requestServiceTime;
+    int logLevel;
 };
 
 #endif
