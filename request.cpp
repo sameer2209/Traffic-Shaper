@@ -1,5 +1,6 @@
 #include "request.h"
 #include "main.h"
+#include "logger.h"
 #include <iostream>
 #include <unistd.h>
 #include <ctime>
@@ -83,10 +84,14 @@ void* startRequestThread(void* inputData){
         sleep(requestRate);
         req = new Request();
         pthread_mutex_lock(&lockQ1);
-        cout << "r" << req->getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
+        // cout << "r" << req->getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
+        string msg = "r" + to_string(req->getRequestId()) + " arrives, need " + to_string(tokensReq) + " tokens";
+        printLog(msg);
         q1.push(req);
         req->setQ1EntryTime();
-        cout << "r" << req->getRequestId() << " enters Q1" << endl;
+        // cout << "r" << req->getRequestId() << " enters Q1" << endl;
+        msg = "r" + to_string(req->getRequestId()) + " enters Q1";
+        printLog(msg);
         pthread_cond_signal(&condQ1);
         pthread_mutex_unlock(&lockQ1);
     }

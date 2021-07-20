@@ -1,5 +1,6 @@
 #include "requestToken.h"
 #include "main.h"
+#include "logger.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -17,12 +18,19 @@ void TokenBuffer::setMaxBufferSize(int size){
 void TokenBuffer::push(int ele, int logLevel){
     if(tokenBuf.size() < maxBufferSize){
         tokenBuf.push(ele);
-        if(logLevel == 2)
-            cout << "token number " << ele << " enters the token buffer" << endl;
+        if(logLevel == 2){
+            // cout << "token number " << ele << " enters the token buffer" << endl;
+            string msg = "token number " + to_string(ele) + " enters the token buffer";
+            printLog(msg);
+        }
+            
     }
     else{
-        if(logLevel == 2)
-            cout << "token buffer full, dropping token number " << ele << endl;
+        if(logLevel == 2){
+            // cout << "token buffer full, dropping token number " << ele << endl;
+            string msg = "token buffer full, dropping token number " + to_string(ele);
+            printLog(msg);
+        }
     }
 }
 
@@ -51,8 +59,11 @@ void* startTokenThread(void* inputData){
         sleep(tokenRate);
         TokenBuffer::tokenCount++;
         pthread_mutex_lock(&lockTokenBuffer);
-        if(logLevel == 2)
+        if(logLevel == 2){
             cout << "token number " << TokenBuffer::tokenCount << " arrives" << endl;
+            string msg = "token number " + to_string(TokenBuffer::tokenCount) + " arrives";
+            printLog(msg);
+        }
         buffer.push(TokenBuffer::tokenCount, logLevel);
         pthread_cond_signal(&condTokenBuffer);
         pthread_mutex_unlock(&lockTokenBuffer);

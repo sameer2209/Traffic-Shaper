@@ -1,6 +1,7 @@
 #include "requestServer.h"
 #include "main.h"
 #include "request.h"
+#include "logger.h"
 #include <queue>
 #include <pthread.h>
 #include <iostream>
@@ -24,11 +25,17 @@ void* startServerThread(void* inputData){
         req = q2.front();
         q2.pop();
         req->setQ2ExitTime();
-        cout << "r" << req->getRequestId() << " leaves Q2, time in Q2 = " << req->getTimeInQ2() << "ms" << endl;
-        cout << "r" << req->getRequestId() << " begins service at S, requesting " << reqServiceTime * 1000.0 << "ms of service" << endl;
+        // cout << "r" << req->getRequestId() << " leaves Q2, time in Q2 = " << req->getTimeInQ2() << "ms" << endl;
+        string msg = "r" + to_string(req->getRequestId()) + " leaves Q2, time in Q2 = " + to_string(req->getTimeInQ2()) + "ms";
+        printLog(msg);
+        // cout << "r" << req->getRequestId() << " begins service at S, requesting " << reqServiceTime * 1000.0 << "ms of service" << endl;
+        msg = "r" + to_string(req->getRequestId()) + " begins service at S, requesting " + to_string(reqServiceTime * 1000.0) + "ms of service";
+        printLog(msg);
         sleep(reqServiceTime);
         req->setServerExitTime();
-        cout << "r" << req->getRequestId() << " departs from S, service time = " << req->getServiceTime() << "ms, time in system = " << req->getTimeInSystem() << "ms" << endl;
+        // cout << "r" << req->getRequestId() << " departs from S, service time = " << req->getServiceTime() << "ms, time in system = " << req->getTimeInSystem() << "ms" << endl;
+        msg = "r" + to_string(req->getRequestId()) + " departs from S, service time = " + to_string(req->getServiceTime()) + "ms, time in system = " + to_string(req->getTimeInSystem()) + "ms";
+        printLog(msg);
         pthread_mutex_unlock(&lockQ2);
         free(req);
     }
