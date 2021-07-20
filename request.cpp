@@ -77,7 +77,8 @@ void* startRequestThread(void* inputData){
         if(tokensReq > bufferLen){
             cout << "r" << req->getRequestId() << " resource requirement is more than token buffer length, dropping request r" << req->getRequestId() << endl;
             cout << "requests can not be served, terminating program..." << endl;
-            exit(1);
+            cout << "emulation ends" << endl;
+            exit(0);
         }
         q1.push(req);
         req->setQ1EntryTime();

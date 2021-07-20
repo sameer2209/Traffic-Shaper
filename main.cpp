@@ -6,6 +6,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <queue>
+#include <csignal>
 
 using namespace std;
 
@@ -24,6 +25,8 @@ extern queue<Request*> q2;
 extern pthread_mutex_t lockQ2;
 extern pthread_cond_t condQ2;
 
+pthread_t request_thread, token_thread, server_thread;
+
 void printInputValues(){
     cout << "Printing the input options" << endl;
     for(const auto& value : input_values)
@@ -39,15 +42,30 @@ void printDataFromStruct(){
     cout << "request service time: " << inputData.requestServiceTime << endl;
 }
 
+void signalCallbackHandler(int signum){
+    
+    pthread_cancel(request_thread);
+    pthread_cancel(token_thread);
+    pthread_cancel(server_thread);
+
+    pthread_join(request_thread, NULL);
+    pthread_join(token_thread, NULL);
+    pthread_join(server_thread, NULL);
+
+    cout << "emulation ends" << endl;
+    exit(signum);
+}
+
 int main(int argc, char* argv[]){
 
+    signal(SIGINT, signalCallbackHandler);
+    
     parseInput(argc, argv, input_values);
     createInputDataStructure(input_values, inputData);
     printInputValues();
     printDataFromStruct();
 
     cout << "emulation begin" << endl;
-    pthread_t request_thread, token_thread, server_thread;
     
     int req, tok, ser;
     req = pthread_create(&request_thread, NULL, startRequestThread, &inputData);
@@ -89,9 +107,6 @@ int main(int argc, char* argv[]){
         pthread_cond_signal(&condQ2);
         pthread_mutex_unlock(&lockQ2);
     }
-    
-    pthread_join(request_thread, NULL);
-    pthread_join(token_thread, NULL);
-    pthread_join(server_thread, NULL);
+
     return 0;
 }

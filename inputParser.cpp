@@ -73,7 +73,7 @@ void parseInput(const int argc, const char* const argv[], map<string, unsigned i
             if(strcmp(argv[i], "--log-level") == 0){
                 if(!isValidLogLevel(argv[i+1])){
                     cout << "invalid --log-level flag value. Expected value is either 1 or 2" << endl;
-                    exit(1);
+                    exit(0);
                 }
                 else{
                     input_values[argv[i]] = stoi(argv[i+1]);
@@ -91,18 +91,18 @@ void parseInput(const int argc, const char* const argv[], map<string, unsigned i
                 }
                 else{
                     cout << "integer value expected for option " << argv[i] << endl;
-                    exit(1);
+                    exit(0);
                 }
             }
         }
         else{
             cout << "unrecognized input flag " << argv[i] << endl;
             printExpectedFlags();
-            exit(1);
+            exit(0);
         }
         i += 2;
     }
 
     if(checkMissingInputValues(input_values))
-        exit(1);
+        exit(0);
 }
