@@ -1,10 +1,10 @@
 # Traffic-Shaper
 
-Traffic-Shaper is a logging program for a system that will store the incoming requests in an unlimited size buffer Q1 which have deterministic resource requirement of R. If enough resources are available, the request will be moved to another unlimited size buffer Q2 and if server is not busy it will be executed. Each request will take ‘t’ time to execute on the server. The rate at which resource tokens are created is equal to ‘x’.
+Traffic-Shaper is a logging program for a system that will store the incoming requests in an unlimited size buffer Q1 which have deterministic resource requirement of R. If enough resources are available, the request will be moved to another unlimited size buffer Q2 and if server is not busy it will be executed. Each request will take ‘t’ time to execute on the server. The resource has a fixed size buffer of size L. The rate at which resource tokens are created is equal to ‘x’.
 
-If the resource requirement is > L than the requests will be dropped. 
+If the resource requirement i.e. R > L, then the requests will be dropped. 
 
-**Important feature: This is a logger with two different logging levels.** To see how to use the different logging levels see the usage section below.
+**Important feature: This is a logger with two different logging levels.** To see how to use the different logging levels, check the usage section below.
 
 ## Expected Output
 ```
