@@ -1,16 +1,16 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
-#include <ctime>
+#include <chrono>
 
 class Request {
 
     int requestId;
-    time_t q1EntryTime;
-    time_t q1ExitTime;
-    time_t q2EntryTime;
-    time_t q2ExitTime;
-    time_t serverExitTime;
+    std::chrono::high_resolution_clock::time_point q1EntryTime;
+    std::chrono::high_resolution_clock::time_point q1ExitTime;
+    std::chrono::high_resolution_clock::time_point q2EntryTime;
+    std::chrono::high_resolution_clock::time_point q2ExitTime;
+    std::chrono::high_resolution_clock::time_point serverExitTime;
 
     public:
         static int requestCount;

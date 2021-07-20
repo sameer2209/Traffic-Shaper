@@ -16,58 +16,62 @@ int Request::requestCount = 0;
 
 Request::Request(){
     requestId = requestCount + 1;
-    q1EntryTime = 0;
-    q1ExitTime = 0;
-    q2EntryTime = 0;
-    q2ExitTime = 0;
-    serverExitTime = 0;
+    // q1EntryTime = 0;
+    // q1ExitTime = 0;
+    // q2EntryTime = 0;
+    // q2ExitTime = 0;
+    // serverExitTime = 0;
     requestCount++;
 }
 
 void Request::setQ1EntryTime(){
-    time(&q1EntryTime);
+    q1EntryTime = chrono::high_resolution_clock::now();
     // converting time in seconds to milliseconds
-    q1EntryTime *= 1000.0;
+    // q1EntryTime *= 1000.0;
 }
 
 void Request::setQ1ExitTime(){
-    time(&q1ExitTime);
+    q1ExitTime = chrono::high_resolution_clock::now();
     // converting time in seconds to milliseconds
-    q1ExitTime *= 1000.0;
+    // q1ExitTime *= 1000.0;
 }
 
 void Request::setQ2EntryTime(){
-    time(&q2EntryTime);
+    q2EntryTime = chrono::high_resolution_clock::now();
     // converting time in seconds to milliseconds
-    q2EntryTime *= 1000.0;
+    // q2EntryTime *= 1000.0;
 }
 
 void Request::setQ2ExitTime(){
-    time(&q2ExitTime);
+    q2ExitTime = chrono::high_resolution_clock::now();
     // converting time in seconds to milliseconds
-    q2ExitTime *= 1000.0;
+    // q2ExitTime *= 1000.0;
 }
 
 void Request::setServerExitTime(){
-    time(&serverExitTime);
+    serverExitTime = chrono::high_resolution_clock::now();
     // converting time in seconds to milliseconds
-    serverExitTime *= 1000.0;
+    // serverExitTime *= 1000.0;
 }
 
 double Request::getTimeInQ1(){
-    return difftime(q1ExitTime, q1EntryTime);
+    chrono::duration<double, milli> tm = q1ExitTime - q1EntryTime;
+    return tm.count();
 }
 
 double Request::getTimeInQ2(){
-    return difftime(q2ExitTime, q2EntryTime);
+    chrono::duration<double, milli> tm = q2ExitTime - q2EntryTime;
+    return tm.count();
 }
 
 double Request::getServiceTime(){
-    return difftime(serverExitTime, q2ExitTime);
+    chrono::duration<double, milli> tm = serverExitTime - q2ExitTime;
+    return tm.count();
 }
 
 double Request::getTimeInSystem(){
-    return difftime(serverExitTime, q1EntryTime);
+    chrono::duration<double, milli> tm = serverExitTime - q1EntryTime;
+    return tm.count();
 }
 
 int Request::getRequestId(){
