@@ -1,5 +1,5 @@
 #include "inputParser.h"
-#include "main.h"
+#include "trafficShaper.h"
 #include "request.h"
 #include "requestServer.h"
 #include "requestToken.h"

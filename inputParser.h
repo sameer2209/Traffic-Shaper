@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "main.h"
+#include "trafficShaper.h"
 
 void parseInput(const int argc, const char* const argv[], std::map<std::string, unsigned int> &input_values);
 

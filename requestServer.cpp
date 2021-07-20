@@ -1,5 +1,5 @@
 #include "requestServer.h"
-#include "main.h"
+#include "trafficShaper.h"
 #include "request.h"
 #include <queue>
 #include <pthread.h>
