@@ -8,9 +8,13 @@
 using namespace std;
 
 std::queue<Request*> q1;
+
+// mutex lock for the Q1 buffer
 pthread_mutex_t lockQ1;
+// condition variable for the Q1 buffer
 pthread_cond_t condQ1;
 
+// static variable to hold the count of requests
 int Request::requestCount = 0;
 
 Request::Request(){
@@ -72,18 +76,24 @@ void* startRequestThread(void* inputData){
     while(true){
         sleep(requestRate);
         req = new Request();
+        // acquire the mutex lock for the Q1 buffer
         pthread_mutex_lock(&lockQ1);
         cout << "r" << req->getRequestId() << " arrives, need " << tokensReq << " tokens" << endl;
+        
+        // if the request resource requirement is more then the resource buffer size, then the requests can not be served
         if(tokensReq > bufferLen){
             cout << "r" << req->getRequestId() << " resource requirement is more than token buffer length, dropping request r" << req->getRequestId() << endl;
             cout << "requests can not be served, terminating program..." << endl;
             cout << "emulation ends" << endl;
             exit(0);
         }
+        // add the new request oject to the Q1 buffer
         q1.push(req);
         req->setQ1EntryTime();
         cout << "r" << req->getRequestId() << " enters Q1" << endl;
+        // signal the main thread
         pthread_cond_signal(&condQ1);
+        // release the mutex lock for the Q1 buffer
         pthread_mutex_unlock(&lockQ1);
     }
 }

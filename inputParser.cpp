@@ -29,6 +29,7 @@ bool isNumber(string str){
     return true;
 }
 
+// function to print the option flags expected by the program
 void printExpectedFlags(){
     cout << "The expected flags are: ";
     for(string flag : expected_flags){
@@ -37,6 +38,7 @@ void printExpectedFlags(){
     cout << endl;
 }
 
+// function to create the sruct to store the input data from the options flag map for the program
 void createInputDataStructure(map<string, unsigned int> input_values, InputData &inputData){
     for(const auto& val : input_values){
         if(val.first == "-r")
@@ -54,6 +56,7 @@ void createInputDataStructure(map<string, unsigned int> input_values, InputData 
     }
 }
 
+// function to verify the valid --log-level value
 bool isValidLogLevel(string str){
     if(isNumber(str)){
         int t = stoi(str);
@@ -65,6 +68,7 @@ bool isValidLogLevel(string str){
     return false;
 }
 
+// function to parse the command line options and store them in the corresponding option flags map
 void parseInput(const int argc, const char* const argv[], map<string, unsigned int> &input_values){
     
     int i = 1;
