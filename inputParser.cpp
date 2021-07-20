@@ -70,28 +70,34 @@ void parseInput(const int argc, const char* const argv[], map<string, unsigned i
     int i = 1;
     while(i < argc) {
         if (find(begin(expected_flags), end(expected_flags), argv[i]) != end(expected_flags)){
-            if(strcmp(argv[i], "--log-level") == 0){
-                if(!isValidLogLevel(argv[i+1])){
-                    cout << "invalid --log-level flag value. Expected value is either 1 or 2" << endl;
-                    exit(0);
-                }
-                else{
-                    input_values[argv[i]] = stoi(argv[i+1]);
-                }
-                    
+            if(i+1 == argc){
+                cout << "missing input value for option flag " << argv[i] << endl;
+                exit(0);
             }
             else{
-                if(isNumber(argv[i+1])){
-                    int t = stoi(argv[i+1]);
-                    if (t > 0)
-                        input_values[argv[i]] = t;
-                    else{
-                        cout << "positive vaule expected for option " << argv[i] << endl;
+                if(strcmp(argv[i], "--log-level") == 0){
+                    if(!isValidLogLevel(argv[i+1])){
+                        cout << "invalid --log-level flag value. Expected value is either 1 or 2" << endl;
+                        exit(0);
                     }
+                    else{
+                        input_values[argv[i]] = stoi(argv[i+1]);
+                    }
+                    
                 }
                 else{
-                    cout << "integer value expected for option " << argv[i] << endl;
-                    exit(0);
+                    if(isNumber(argv[i+1])){
+                        int t = stoi(argv[i+1]);
+                        if (t > 0)
+                            input_values[argv[i]] = t;
+                        else{
+                            cout << "positive vaule expected for option " << argv[i] << endl;
+                        }
+                    }
+                    else{
+                        cout << "integer value expected for option " << argv[i] << endl;
+                        exit(0);
+                    }
                 }
             }
         }
