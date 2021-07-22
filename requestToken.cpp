@@ -11,6 +11,8 @@ pthread_mutex_t lockTokenBuffer;
 // condition variable for the token buffer
 pthread_cond_t condTokenBuffer;
 
+extern pthread_mutex_t lockStdOut;
+
 // static variable to store the created token counts
 int TokenBuffer::tokenCount = 0;
 
@@ -65,8 +67,11 @@ void* startTokenThread(void* inputData){
         TokenBuffer::tokenCount++;
         // acquire the mutex lock for the token buffer
         pthread_mutex_lock(&lockTokenBuffer);
-        if(logLevel == 2)
+        if(logLevel == 2){
+            pthread_mutex_lock(&lockStdOut);
             cout << "token number " << TokenBuffer::tokenCount << " arrives" << endl;
+            pthread_mutex_unlock(&lockStdOut);
+        }
         
         // add the new tokens to the token buffer
         buffer.push(TokenBuffer::tokenCount, logLevel);

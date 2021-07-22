@@ -15,6 +15,8 @@ pthread_mutex_t lockQ2;
 // condition variable for the Q2 buffer
 pthread_cond_t condQ2;
 
+extern pthread_mutex_t lockStdOut;
+
 void* startServerThread(void* inputData){
     int reqServiceTime = ((InputData*) inputData)->requestServiceTime;
     pthread_mutex_init(&lockQ2, 0);
@@ -31,15 +33,22 @@ void* startServerThread(void* inputData){
         // remove the request from the Q2 buffer
         q2.pop();
         req->setQ2ExitTime();
+
+        // release the mutex lock for the Q2 buffer
+        pthread_mutex_unlock(&lockQ2);
+
+        pthread_mutex_lock(&lockStdOut);
         cout << fixed << setprecision(3) << "r" << req->getRequestId() << " leaves Q2, time in Q2 = " << req->getTimeInQ2() << "ms" << endl;
         cout << fixed << setprecision(3) << "r" << req->getRequestId() << " begins service at S, requesting " << reqServiceTime * 1000.0 << "ms of service" << endl;
-        
+        pthread_mutex_unlock(&lockStdOut);
+
         // service the request by the server thread
         sleep(reqServiceTime);
         req->setServerExitTime();
+
+        pthread_mutex_lock(&lockStdOut);
         cout << fixed << setprecision(3) << "r" << req->getRequestId() << " departs from S, service time = " << req->getServiceTime() << "ms, time in system = " << req->getTimeInSystem() << "ms" << endl;
-        // release the mutex lock for the Q2 buffer
-        pthread_mutex_unlock(&lockQ2);
+        pthread_mutex_unlock(&lockStdOut);
 
         // delete the request object once it is serviced to avoid memory leaks
         free(req);
